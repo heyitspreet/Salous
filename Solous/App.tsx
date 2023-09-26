@@ -16,6 +16,12 @@ export default function App() {
 
         <DailyJournal />
         <UpcomingPeriods />
+
+        <View style={styles.header}>
+          <Text style={styles.heading2}>Fitness Data</Text>
+          {/* add a symbol for hamburger menu */}
+          <Text style={{color: 'black', fontSize: 30, margin: 10}}>⚙</Text>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -25,6 +31,13 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 40,
     fontWeight: 'bold',
+    fontFamily: 'Roboto',
+    color: '#000000',
+    marginTop: 10,
+    marginLeft: 20,
+  },
+  heading2: {
+    fontSize: 30,
     fontFamily: 'Roboto',
     color: '#000000',
     marginTop: 10,

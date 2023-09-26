@@ -1,60 +1,102 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-const PeriodCountdown = () => {
-  const [daysLeft, setDaysLeft] = useState(0);
-  const [hoursLeft, setHoursLeft] = useState(0);
-  const [minutesLeft, setMinutesLeft] = useState(0);
-  const [secondsLeft, setSecondsLeft] = useState(0);
+export default function UpcomingPeriods() {
+  const [days, setDays] = useState([]);
+  const periodDate = new Date(2023, 8, 26);
 
-  const calculateTimeLeft = () => {
-    const now = new Date();
-    const periodStart = new Date(2023, 9, 24); // This is the date of the next period
-    const totalSecondsLeft = (periodStart - now) / 1000;
-    const daysLeft = Math.floor(totalSecondsLeft / (24 * 60 * 60));
-    const hoursLeft = Math.floor(
-      (totalSecondsLeft % (24 * 60 * 60)) / (60 * 60),
-    );
-    const minutesLeft = Math.floor((totalSecondsLeft % (60 * 60)) / 60);
-    const secondsLeft = Math.floor(totalSecondsLeft % 60);
+  const calculateDays = () => {
+    const today = new Date();
+    const nextFiveDays = [];
+    for (let i = 0; i < 5; i++) {
+      const day = new Date(today.getTime() + i * 24 * 60 * 60 * 1000);
+      nextFiveDays.push(day);
+    }
 
-    setDaysLeft(daysLeft);
-    setHoursLeft(hoursLeft);
-    setMinutesLeft(minutesLeft);
-    setSecondsLeft(secondsLeft);
+    setDays(nextFiveDays);
   };
 
+  function isPeriodOrOvulationDate(currentDate, periodDate) {
+    // Calculate the number of days between the current date and the period date.
+    const startDateObj = new Date(currentDate);
+    const endDateObj = new Date(periodDate);
+
+    // Subtract the earlier date from the later date.
+    const differenceInMilliseconds = endDateObj - startDateObj;
+
+    // Divide the difference in milliseconds by the number of milliseconds in a day.
+    let daysBetween = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+    //round to nearest whole number
+    daysBetween = Math.abs(daysBetween);
+    daysBetween = Math.floor(daysBetween);
+    console.log('daysBetween', daysBetween);
+    console.log(startDateObj, endDateObj);
+    // If the number of days between is a multiple of 28, then the current date is a period date.
+    if (daysBetween % 28 === 0) {
+      return 'period';
+    }
+
+    if (daysBetween % 28 === 14) {
+      return 'ovulation';
+    }
+
+    return 'neither';
+  }
+
   useEffect(() => {
-    calculateTimeLeft();
-    const interval = setInterval(calculateTimeLeft, 1000);
-    return () => clearInterval(interval);
+    calculateDays();
   }, []);
+
+  const renderBubble = day => {
+    const isPeriodDay = isPeriodOrOvulationDate(day, periodDate) === 'period';
+    const isOvulationDay =
+      isPeriodOrOvulationDate(day, periodDate) === 'ovulation';
+    const color = isPeriodDay
+      ? '#d77471'
+      : isOvulationDay
+      ? '#74899d'
+      : 'white';
+
+    return (
+      <Text style={[styles.bubble, {backgroundColor: color}]}>
+        {day.getDate()}
+      </Text>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Upcoming:</Text>
-      <View style={styles.Time}>
-        <View style={styles.countdown}>
-          <Text style={styles.number}>{daysLeft}</Text>
-          <Text style={styles.text}>Days</Text>
-        </View>
-        <View style={styles.countdown}>
-          <Text style={styles.number}>{hoursLeft}</Text>
-          <Text style={styles.text}>Hours</Text>
-        </View>
-        <View style={styles.countdown}>
-          <Text style={styles.number}>{minutesLeft}</Text>
-          <Text style={styles.text}>Minutes</Text>
-        </View>
-        <View style={styles.countdown}>
-          <Text style={styles.number}>{secondsLeft}</Text>
-          <Text style={styles.text}>Seconds</Text>
+      <Text style={{color: 'black', fontSize: 20}}>Upcoming Periods:</Text>
+      <View style={styles.bubbleCont}>
+        {days.map(day => renderBubble(day))}
+        <View style={styles.lengend}>
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+                backgroundColor: '#d77471',
+                width: 15,
+                height: 15,
+                borderRadius: 5,
+                marginHorizontal: 5,
+              }}></View>
+            <Text style={{color: 'black', fontSize: 15}}>Period</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+                backgroundColor: '#74899d',
+                width: 15,
+                height: 15,
+                borderRadius: 5,
+                marginHorizontal: 5,
+              }}></View>
+            <Text style={{color: 'black', fontSize: 15}}>Ovulation</Text>
+          </View>
         </View>
       </View>
-      <Text style={styles.text}>Until your next period</Text>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -63,18 +105,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderColor: 'black',
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: 25,
     marginTop: 20,
   },
-  button: {
-    color: 'black',
-    fontSize: 20,
-    borderRadius: 50,
-  },
-  Time: {
+  bubbleCont: {
+    marginTop: 10,
+    padding: 0,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+  },
+  bubble: {
+    borderWidth: 1,
+    borderColor: 'black',
+    marginHorizontal: 5,
+    marginBottom: 10,
+    width: 40,
+    height: 40,
+    borderRadius: 5,
+    textAlign: 'center',
+    alignItems: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
-
-export default PeriodCountdown;
