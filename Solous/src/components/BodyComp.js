@@ -30,6 +30,18 @@ export default function BodyComp() {
     }
   }
 
+  function getBMIStyle() {
+    if (bmi < 18.5) {
+      return {color: '#d77471'};
+    } else if (bmi < 25) {
+      return {color: '#99c87a'};
+    } else if (bmi < 30) {
+      return {color: '#d7a971'};
+    } else {
+      return {color: '#d77171'};
+    }
+  }
+
   return (
     <View>
       <Modal
@@ -142,7 +154,7 @@ export default function BodyComp() {
           </View>
           {/* Activity amount */}
           <View style={{justifyContent: 'center'}}>
-            <View style={[styles.row, {marginTop:27, marginBottom:10}]}>
+            <View style={[styles.row, {marginTop: 27, marginBottom: 10}]}>
               <Text
                 style={getButtonStyle(1.2)}
                 onPress={() => setActivity(1.2)}>
@@ -169,8 +181,10 @@ export default function BodyComp() {
         </View>
 
         <View style={styles.row}>
-          <Text style={styles.Metric2}>{bmi.toFixed(1)}</Text>
-          <Text style={styles.Metric2}>{(calories * activity).toFixed(1)}</Text>
+          <Text style={[styles.Metric2, getBMIStyle()]}>{bmi.toFixed(1)}</Text>
+          <Text style={[styles.Metric2, {color: '#ea335f'}]}>
+            {(calories * activity).toFixed(1)}
+          </Text>
         </View>
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
           <Text style={styles.heading3}>BMI</Text>
@@ -252,7 +266,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   Metric2: {
-    color: '#737373',
     fontWeight: '400',
     fontSize: 40,
     textAlign: 'center',
