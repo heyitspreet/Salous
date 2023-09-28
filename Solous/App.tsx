@@ -1,28 +1,33 @@
-import {StyleSheet, Text, SafeAreaView, View, ScrollView} from 'react-native';
-import DailyJournal from './components/DailyJournal';
-import UpcomingPeriods from './components/UpcomingPeriods';
+import {StyleSheet, SafeAreaView} from 'react-native';
+import Home from './src/home';
+import Fit from './src/Fit';
+import {NavigationContainer} from '@react-navigation/native';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import React from 'react';
 
+const Drawer = createDrawerNavigator();
+
+function MyDrawer() {
+  return (
+    <Drawer.Navigator
+      useLegacyImplementation={false}
+      screenOptions={{
+        contentStyle: {
+          backgroundColor: '#FFFFFF',
+        },
+      }}>
+      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Fitness" component={Fit} />
+    </Drawer.Navigator>
+  );
+}
+
 export default function App() {
-  const Name = 'PREET';
   return (
     <SafeAreaView style={styles.base}>
-      <ScrollView>
-        <View style={styles.header}>
-          <Text style={styles.heading}>HEY {Name}</Text>
-          {/* add a symbol for hamburger menu */}
-          <Text style={{color: 'black', fontSize: 30, margin: 15}}>|||</Text>
-        </View>
-
-        <DailyJournal />
-        <UpcomingPeriods />
-
-        <View style={styles.header}>
-          <Text style={styles.heading2}>Fitness Data</Text>
-          {/* add a symbol for hamburger menu */}
-          <Text style={{color: 'black', fontSize: 30, margin: 10}}>⚙</Text>
-        </View>
-      </ScrollView>
+      <NavigationContainer>
+        <MyDrawer />
+      </NavigationContainer>
     </SafeAreaView>
   );
 }
@@ -49,6 +54,7 @@ const styles = StyleSheet.create({
   },
   base: {
     flex: 1,
+    backgroundColor: '#ffffff',
     backgroundImage: 'linear-gradient(to bottom, #000000, #ffffff)',
   },
 });

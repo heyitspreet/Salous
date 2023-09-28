@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Modal} from 'react-native';
+import DatePicker from 'react-native-date-picker';
 
 export default function UpcomingPeriods() {
   const [days, setDays] = useState([]);
-  const periodDate = new Date(2023, 8, 26);
+  //const periodDate = new Date(2023, 8, 30);
+  const [periodDate, setPeriodDate] = useState(new Date(2023, 8, 30));
+  const [modalVisible, setModalVisible] = useState(false);
 
   const calculateDays = () => {
     const today = new Date();
@@ -32,11 +35,11 @@ export default function UpcomingPeriods() {
     console.log('daysBetween', daysBetween);
     console.log(startDateObj, endDateObj);
     // If the number of days between is a multiple of 28, then the current date is a period date.
-    if (daysBetween % 28 === 0) {
+    if (daysBetween % 28 < 2) {
       return 'period';
     }
 
-    if (daysBetween % 28 === 14) {
+    if (daysBetween % 28 < 16 && daysBetween % 28 > 12) {
       return 'ovulation';
     }
 
@@ -66,7 +69,41 @@ export default function UpcomingPeriods() {
 
   return (
     <View style={styles.container}>
-      <Text style={{color: 'black', fontSize: 20}}>Upcoming Periods:</Text>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.3)',
+          }}>
+          <View style={{backgroundColor: 'white', padding: 20}}>
+            <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+              Set Period Date
+            </Text>
+            <Text style={{fontSize: 15, marginVertical: 10}}>
+              Enter the date of your period
+            </Text>
+            <DatePicker date={periodDate} onDateChange={setPeriodDate} />
+            <View
+              style={{backgroundColor: 'black', padding: 15, borderRadius: 25,width:270, alignSelf:'center'}}>
+              <Text
+                style={{fontSize: 20, fontWeight: 'bold', color: 'white', textAlign: 'center'}}
+                onPress={() => setModalVisible(false)}>
+                Done
+              </Text>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text style={{color: 'black', fontSize: 20}}>Upcoming Periods:</Text>
+        <Text
+          style={{color: 'black', fontSize: 15, marginVertical: 10}}
+          onPress={() => setModalVisible(true)}>
+          ⚙
+        </Text>
+      </View>
       <View style={styles.bubbleCont}>
         {days.map(day => renderBubble(day))}
         <View style={styles.lengend}>
