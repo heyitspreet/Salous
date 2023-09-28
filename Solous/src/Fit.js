@@ -4,6 +4,7 @@ import Water from './components/Water';
 import BodyComp from './components/BodyComp';
 
 export default function Fit() {
+
   return (
     <View style={styles.base}>
       <View style={styles.header}>

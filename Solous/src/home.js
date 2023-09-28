@@ -1,6 +1,8 @@
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import DailyJournal from './components/DailyJournal';
 import UpcomingPeriods from './components/UpcomingPeriods';
+import Water from './components/Water';
+import BodyComp from './components/BodyComp';
 import React from 'react';
 
 export default function App() {
@@ -21,6 +23,17 @@ export default function App() {
           <Text style={styles.heading2}>Fitness Data</Text>
           {/* add a symbol for hamburger menu */}
           <Text style={{color: 'black', fontSize: 30, margin: 10}}>⚙</Text>
+        </View>
+
+        <Water />
+
+        <View style={styles.header}>
+          <Text style={styles.heading2}>Reminders</Text>
+          {/* add a symbol for hamburger menu */}
+          <Text
+            style={{color: '#333333', fontSize: 20, margin: 10, marginTop: 20}}>
+            view
+          </Text>
         </View>
       </ScrollView>
     </View>
