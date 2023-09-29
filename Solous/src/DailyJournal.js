@@ -2,6 +2,9 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, Modal, Button, TextInput, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ScrollView} from 'react-native-gesture-handler';
+import {MMKV} from 'react-native-mmkv';
+
+export const storage = new MMKV();
 
 const DailyJournal = () => {
   const [entry, setEntry] = useState('');
@@ -9,21 +12,18 @@ const DailyJournal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [dailyBlogs, setDailyBlogs] = useState([]);
 
+  // const storage = new MMKVLoader();
+
   useEffect(() => {
     const getDailyBlogs = async () => {
-      try {
-        // Get the daily blogs from the JSON file.
-        const jsonDailyBlogs = await AsyncStorage.getItem('daily_blogs.json');
-
-        // If the daily blogs exist in the JSON file, set the state variable.
-        if (jsonDailyBlogs) {
-          setDailyBlogs(JSON.parse(jsonDailyBlogs));
-        }
-      } catch (error) {
-        console.log(error);
+      const dailyBlogs = await storage.getString('daily_blogs');
+      if (dailyBlogs === null) {
+        return [];
+      } else {
+        setDailyBlogs(JSON.parse(dailyBlogs));
+        return JSON.parse(dailyBlogs);
       }
     };
-
     getDailyBlogs();
   }, []);
 
@@ -31,10 +31,26 @@ const DailyJournal = () => {
     setMoodEmoji(moodEmoji);
   };
 
+  // const setDailyBlogsAsync = async dailyBlogs => {
+  //   // Check if the dailyBlogs variable is not null or undefined.
+  //   if (!dailyBlogs) {
+  //     // Handle the error.
+  //     return;
+  //   }
+
+  //   // Try to call the JSON.stringify function.
+  //   try {
+  //     const dailyBlogsJson = JSON.stringify(dailyBlogs);
+  //   } catch (error) {
+  //     // Handle the error.
+  //     return;
+  //   }
+  // };
+
   const handleSubmit = async () => {
     // Get the current date.
     const date = new Date();
-    const dateString = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+    const dateString = `${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`;
 
     // Create a new daily blog object.
     const newDailyBlog = {
@@ -47,10 +63,22 @@ const DailyJournal = () => {
     const newDailyBlogs = [...dailyBlogs, newDailyBlog];
 
     // Write the new daily blogs array to the JSON file.
-    await AsyncStorage.setItem(
-      'daily_blogs.json',
-      JSON.stringify(newDailyBlogs),
-    );
+    storage.set('daily_blogs', JSON.stringify(newDailyBlogs));
+    console.log(storage.getString('daily_blogs'));
+
+    // Check if the dailyBlogs variable is not null or undefined.
+    if (!dailyBlogs) {
+      // Handle the error.
+      return;
+    }
+
+    // Try to call the setDailyBlogsAsync function.
+    // try {
+    //   await setDailyBlogsAsync(newDailyBlogs);
+    // } catch (error) {
+    //   // Handle the error.
+    //   return;
+    // }
 
     // Update the state variable.
     setDailyBlogs(newDailyBlogs);
