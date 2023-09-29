@@ -31,21 +31,21 @@ const DailyJournal = () => {
     setMoodEmoji(moodEmoji);
   };
 
-  // const setDailyBlogsAsync = async dailyBlogs => {
-  //   // Check if the dailyBlogs variable is not null or undefined.
-  //   if (!dailyBlogs) {
-  //     // Handle the error.
-  //     return;
-  //   }
+  const setDailyBlogsAsync = async dailyBlogs => {
+    // Check if the dailyBlogs variable is not null or undefined.
+    if (!dailyBlogs) {
+      // Handle the error.
+      return;
+    }
 
-  //   // Try to call the JSON.stringify function.
-  //   try {
-  //     const dailyBlogsJson = JSON.stringify(dailyBlogs);
-  //   } catch (error) {
-  //     // Handle the error.
-  //     return;
-  //   }
-  // };
+    // Try to call the JSON.stringify function.
+    try {
+      const dailyBlogsJson = JSON.stringify(dailyBlogs);
+    } catch (error) {
+      // Handle the error.
+      return;
+    }
+  };
 
   const handleSubmit = async () => {
     // Get the current date.
@@ -72,13 +72,13 @@ const DailyJournal = () => {
       return;
     }
 
-    // Try to call the setDailyBlogsAsync function.
-    // try {
-    //   await setDailyBlogsAsync(newDailyBlogs);
-    // } catch (error) {
-    //   // Handle the error.
-    //   return;
-    // }
+    //Try to call the setDailyBlogsAsync function.
+    try {
+      await setDailyBlogsAsync(newDailyBlogs);
+    } catch (error) {
+      // Handle the error.
+      return;
+    }
 
     // Update the state variable.
     setDailyBlogs(newDailyBlogs);

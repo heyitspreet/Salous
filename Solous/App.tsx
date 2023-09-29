@@ -10,15 +10,9 @@ const Drawer = createDrawerNavigator();
 
 function MyDrawer() {
   return (
-    <Drawer.Navigator
-      useLegacyImplementation={false}
-      screenOptions={{
-        contentStyle: {
-          backgroundColor: '#FFFFFF',
-        },
-      }}>
-      <Drawer.Screen name="Journal" component={DailyJournal} />
+    <Drawer.Navigator useLegacyImplementation={false}>
       <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Journal" component={DailyJournal} />
       <Drawer.Screen name="Fitness" component={Fit} />
     </Drawer.Navigator>
   );

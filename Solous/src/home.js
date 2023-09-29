@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, } from 'react-native';
 import DailyJournal from './components/DailyJournal';
 import UpcomingPeriods from './components/UpcomingPeriods';
 import Water from './components/Water';
