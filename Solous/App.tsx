@@ -1,6 +1,7 @@
 import {StyleSheet, SafeAreaView} from 'react-native';
 import Home from './src/home';
 import Fit from './src/Fit';
+import DailyJournal from './src/DailyJournal';
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import React from 'react';
@@ -16,6 +17,7 @@ function MyDrawer() {
           backgroundColor: '#FFFFFF',
         },
       }}>
+      <Drawer.Screen name="Journal" component={DailyJournal} />
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="Fitness" component={Fit} />
     </Drawer.Navigator>
