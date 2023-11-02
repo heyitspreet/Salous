@@ -2,8 +2,12 @@ import {StyleSheet, SafeAreaView} from 'react-native';
 import Home from './src/home';
 import Fit from './src/Fit';
 import DailyJournal from './src/DailyJournal';
+import Reminders from './src/Reminders';
+import Rem2 from './src/Rem2';
+import Sleep from './src/Sleep';
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import GetHelp from './src/GetHelp';
 import React from 'react';
 
 const Drawer = createDrawerNavigator();
@@ -11,9 +15,13 @@ const Drawer = createDrawerNavigator();
 function MyDrawer() {
   return (
     <Drawer.Navigator useLegacyImplementation={false}>
+      {/* <Drawer.Screen name="Rem2" component={Rem2} /> */}
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="Journal" component={DailyJournal} />
       <Drawer.Screen name="Fitness" component={Fit} />
+      <Drawer.Screen name="Reminders" component={Reminders} />
+      <Drawer.Screen name="AI Help" component={GetHelp} />
+      <Drawer.Screen name="Sleep" component={Sleep} />
     </Drawer.Navigator>
   );
 }

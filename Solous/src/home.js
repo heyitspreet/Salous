@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, ScrollView, } from 'react-native';
-import DailyJournal from './components/DailyJournal';
+import DailyJournal from './components/DailyJournalHome';
 import UpcomingPeriods from './components/UpcomingPeriods';
 import Water from './components/Water';
 

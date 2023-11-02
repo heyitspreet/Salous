@@ -33,9 +33,9 @@ local.properties
 .cxx/
 *.keystore
 !debug.keystore
-
 # node.js
 #
+/keys/
 node_modules/
 npm-debug.log
 yarn-error.log
