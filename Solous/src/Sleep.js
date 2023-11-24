@@ -5,9 +5,18 @@ import SleepInfo from './components/SleepInfo';
 
 export default function Sleep() {
   const [hoursOfSleep, setHoursOfSleep] = useState(0);
+  //Data for last 5 days of sleep
+  const [day1, setDay1] = useState(0);
+  const [day2, setDay2] = useState(0);
+  const [day3, setDay3] = useState(0);
+  const [day4, setDay4] = useState(0);
+  const [day5, setDay5] = useState(0);
 
-  const setHours = text => {
+
+  const setHours = () => {
     // Use parseInt to convert text to a number
+    let text = parseInt(day1) + parseInt(day2) + parseInt(day3) + parseInt(day4) + parseInt(day5);
+    text = text / 5;
     if (text < 0) {
       text = 0;
     }
@@ -19,14 +28,44 @@ export default function Sleep() {
 
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
+      {/* For last 5 Days */}
       <Text style={styles.heading}>Sleep</Text>
       {/* TextInput Enter sleep hours */}
+      <Text style={styles.heading3}>Enter sleep hours</Text>
       <TextInput
-        style={[styles.Water, {textAlign: 'center'}]}
-        placeholder="Sleep hours"
-        onChangeText={text => setHours(text)} // Use onChangeText instead of onChange
+        style={[styles.heading2, {textAlign: 'center'}]}
+        placeholder="Yesterday"
+        onChangeText={text => setDay1(text)} // Use onChangeText instead of onChange
         keyboardType="numeric" // Ensures only numeric input
       />
+      <TextInput
+        style={[styles.heading2, {textAlign: 'center'}]}
+        placeholder="Day-Before"
+        onChangeText={text => setDay2(text)} // Use onChangeText instead of onChange
+        keyboardType="numeric" // Ensures only numeric input
+      />
+      <TextInput
+        style={[styles.heading2, {textAlign: 'center'}]}
+        placeholder="The Previous Day"
+        onChangeText={text => setDay3(text)} // Use onChangeText instead of onChange
+        keyboardType="numeric" // Ensures only numeric input
+      />
+      <TextInput
+        style={[styles.heading2, {textAlign: 'center'}]}
+        placeholder="The Previous Day"
+        onChangeText={text => setDay4(text)} // Use onChangeText instead of onChange
+        keyboardType="numeric" // Ensures only numeric input
+      />
+      <TextInput
+        style={[styles.heading2, {textAlign: 'center'}]}
+        placeholder="The Previous Day"
+        onChangeText={text => setDay5(text)} // Use onChangeText instead of onChange
+        keyboardType="numeric" // Ensures only numeric input
+      />
+      {/* Button to submit */}
+      <Text style={styles.button2} onPress={()=>setHours()}>Check</Text>
+
+      {/* Send average of the last 5 days */}
       <SleepMeter hoursOfSleep={hoursOfSleep} />
       <SleepInfo hoursOfSleep={hoursOfSleep} />
     </View>
@@ -75,6 +114,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: 'white',
     backgroundColor: '#6a899f',
+    textAlign: 'center',
+    alignSelf: 'center',
+    width: 100,
   },
   header: {
     flexDirection: 'row',

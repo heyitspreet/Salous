@@ -1,19 +1,114 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  CheckBox,
+} from 'react-native';
 import React from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 import Reminder from './components/Reminder';
 
+const daysOfWeek = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+// Reminder { title: string, time: string, days: string[], id: string }
 export default function Reminders() {
+  const [reminders, setReminders] = React.useState([]); // [Reminder
+  const [title, setTitle] = React.useState('');
+  const [time, setTime] = React.useState('');
+  // const [days, setDays] = React.useState('');
+  const [selectedDays, setSelectedDays] = React.useState([]);
+  const createReminder = (title, time, days) => {
+    setReminders(prevReminders => [
+      ...prevReminders,
+      {
+        title,
+        time,
+        days: selectedDays.join(', '),
+        id: `${title}-${time}-${days}-${Math.random()
+          .toString(36)
+          .substring(7)}`,
+      },
+    ]);
+  };
+  const clearReminders = () => {
+    setReminders([]);
+  };
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <View style={styles.header}>
         <Text style={styles.heading}>Reminders</Text>
-        <Text style={styles.clear}>Clear</Text>
+        <Button style={styles.clear} title="Clear" onPress={clearReminders} />
       </View>
-
-      <ScrollView>
-        <Reminder title='He' time='10:00' days='sat sun mon'/>
-      </ScrollView>
+      <View style={{flexDirection: 'column'}}>
+        <Text style={styles.heading2}>Create Reminder</Text>
+        <View style={styles.container}>
+          <Text style={styles.heading3}>Title</Text>
+          <TextInput
+            style={styles.heading4}
+            placeholder="Enter Title"
+            value={title}
+            onChangeText={text => setTitle(text)}
+          />
+          <Text style={styles.heading3}>Time</Text>
+          <TextInput
+            style={styles.heading4}
+            placeholder="Enter Time"
+            value={time}
+            onChangeText={text => setTime(text)}
+          />
+          <Text style={styles.heading3}>Days</Text>
+          {daysOfWeek.map(day => (
+            <CheckBox
+              key={day}
+              title={day}
+              checked={selectedDays.includes(day)}
+              onPress={() => {
+                if (selectedDays.includes(day)) {
+                  setSelectedDays(
+                    selectedDays.filter(selectedDay => selectedDay !== day),
+                  );
+                } else {
+                  setSelectedDays([...selectedDays, day]);
+                }
+              }}
+            />
+          ))}
+          {/* <TextInput
+            style={styles.heading4}
+            placeholder="Enter Days"
+            value={days}
+            onChangeText={text => setDays(text)}
+          /> */}
+          <Button
+            color="black"
+            title="Create"
+            onPress={() => createReminder(title, time, days)}
+          />
+        </View>
+      </View>
+      <View>
+        <Text style={styles.heading2}>Reminders</Text>
+        {reminders.map(reminder => {
+          console.log(reminder);
+          return (
+            <Reminder
+              title={reminder.title}
+              time={reminder.time}
+              days={reminder.days}
+              key={reminder.id}
+            />
+          );
+        })}
+      </View>
     </View>
   );
 }

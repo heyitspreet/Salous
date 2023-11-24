@@ -5,6 +5,7 @@ import DailyJournal from './src/DailyJournal';
 import Reminders from './src/Reminders';
 import Rem2 from './src/Rem2';
 import Sleep from './src/Sleep';
+import ChatbotPage from './src/ChatBotPage';
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import GetHelp from './src/GetHelp';
@@ -19,8 +20,9 @@ function MyDrawer() {
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="Journal" component={DailyJournal} />
       <Drawer.Screen name="Fitness" component={Fit} />
-      <Drawer.Screen name="Reminders" component={Reminders} />
+      {/* <Drawer.Screen name="Reminders" component={Reminders} /> */}
       <Drawer.Screen name="AI Help" component={GetHelp} />
+      <Drawer.Screen name="Chatbot" component={ChatbotPage} />
       <Drawer.Screen name="Sleep" component={Sleep} />
     </Drawer.Navigator>
   );
